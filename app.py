@@ -7,7 +7,13 @@ import numpy as np
 import torch, json , cv2 , detect
 
 
-st.title("🌊 Under the sea detection")
+#ตั้งค่าเพจให้เป็นแบบที่เราต้องการ พื้นหกลัง ตัวหนังสือ ใดๆว่าไป
+st.set_page_config(page_title="Object Detection",  # Setting page title
+    page_icon="🔬",     # Setting page icon
+    layout="wide",      # Setting layout to wide
+    initial_sidebar_state="expanded",# Expanding sidebar by default
+    
+        )   
 
 st.write("Upload your Image...")
 
