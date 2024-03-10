@@ -73,31 +73,33 @@ def main():
     uploaded_files = st.file_uploader("Choose .jpg pics ...", type="jpg", accept_multiple_files=True)
 
     if uploaded_files:
-        for uploaded_file in uploaded_files:
-            st.write("")
-            st.write(f"Detecting objects in {uploaded_file.name}...")
-            
+        # Split the page into 3 columns
+        col1, col2, col3 = st.beta_columns(3)
+
+        for i, uploaded_file in enumerate(uploaded_files):
             # Read and perform object detection on the uploaded image
             file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
             image = cv2.imdecode(file_bytes, 1)
             detection_result = perform_object_detection(image)
 
-            # Display original image
-            st.image(image, caption='Original Image', use_column_width=True)
+            # Display original image in the first column
+            col1.image(image, caption=f'Original Image - {uploaded_file.name}', use_column_width=True)
 
-            # Display image with bounding boxes
+            # Display image with bounding boxes in the second column
             image_with_boxes = image.copy()
             result.render(image_with_boxes)
-            st.image(image_with_boxes, caption='Image with Bounding Boxes', use_column_width=True)
+            col2.image(image_with_boxes, caption=f'Image with Bounding Boxes - {uploaded_file.name}', use_column_width=True)
 
-            # Display detection results
-            st.code(detection_result)
+            # Display detection results in the third column
+            col3.code(detection_result, caption=f'Detection Results - {uploaded_file.name}')
 
             # Save the output image with bounding boxes
             output_path = f'output_{uploaded_file.name}'
             image_with_boxes_pil = Image.fromarray(cv2.cvtColor(image_with_boxes, cv2.COLOR_BGR2RGB))
             image_with_boxes_pil.save(output_path)
-            st.image(output_path, caption=f'Detected Objects in {uploaded_file.name}', use_column_width=True)
+
+            # Display the output image in the third column
+            col3.image(output_path, caption=f'Detected Objects - {uploaded_file.name}', use_column_width=True)
 
 if __name__ == "__main__":
     main()
