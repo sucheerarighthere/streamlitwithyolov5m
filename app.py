@@ -23,83 +23,38 @@ st.image(image, caption='สาขาวิชาสถิติ คณะวิ
 #model = torch.hub.load('ultralytics/yolov5', 'custom', path='models/last.pt', force_reload=True)
 model = torch.hub.load('ultralytics/yolov5', 'custom', path='models/bestyolo.pt')
 
-# uploaded_file = st.file_uploader("Choose .jpg pic ...", type="jpg")
-# if uploaded_file is not None:
+uploaded_file = st.file_uploader("Choose .jpg pic ...", type="jpg")
+if uploaded_file is not None:
   
-#   file_bytes = np.asarray(bytearray(uploaded_file.read()))
-#   image = cv2.imdecode(file_bytes, 1)
+  file_bytes = np.asarray(bytearray(uploaded_file.read()))
+  image = cv2.imdecode(file_bytes, 1)
 
-#   imgRGB = cv2.cvtColor(image , cv2.COLOR_BGR2RGB)
-#   #st.image(imgRGB)
+  imgRGB = cv2.cvtColor(image , cv2.COLOR_BGR2RGB)
+  #st.image(imgRGB)
 
-#   st.write("")
-#   st.write("Detecting...")
-#   result = model(imgRGB, size=600)
+  st.write("")
+  st.write("Detecting...")
+  result = model(imgRGB, size=600)
   
-#   detect_class = result.pandas().xyxy[0] 
+  detect_class = result.pandas().xyxy[0] 
   
-#   #labels, cord_thres = detect_class[:, :].numpy(), detect_class[:, :].numpy()
+  #labels, cord_thres = detect_class[:, :].numpy(), detect_class[:, :].numpy()
   
-#   #     xmin       ymin    xmax        ymax          confidence  class    name
-#   #0  148.605362   0.0    1022.523743  818.618286    0.813045      2      turtle
+  #     xmin       ymin    xmax        ymax          confidence  class    name
+  #0  148.605362   0.0    1022.523743  818.618286    0.813045      2      turtle
   
-#   st.code(detect_class[['name', 'xmin','ymin', 'xmax', 'ymax']])
+  st.code(detect_class[['name', 'xmin','ymin', 'xmax', 'ymax']])
   
   
   
-#   #st.success(detect_class)
+  #st.success(detect_class)
   
-#   outputpath = 'output.jpg'
+  outputpath = 'output.jpg'
   
-#   result.render()  # render bbox in image
-#   for im in result.ims:
-#       im_base64 = Image.fromarray(im)
-#       im_base64.save(outputpath)
-#       img_ = Image.open(outputpath)
-#       st.image(img_, caption='Model Prediction(s)')
+  result.render()  # render bbox in image
+  for im in result.ims:
+      im_base64 = Image.fromarray(im)
+      im_base64.save(outputpath)
+      img_ = Image.open(outputpath)
+      st.image(img_, caption='Model Prediction(s)')
 
-#===================
-# Function to perform object detection on an image
-def perform_object_detection(image):
-    imgRGB = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    result = model(imgRGB, size=600)
-    detect_class = result.pandas().xyxy[0]
-    return detect_class[['name', 'xmin', 'ymin', 'xmax', 'ymax']]
-
-# Main Streamlit app
-def main():
-    st.title("Object Detection App")
-
-    uploaded_files = st.file_uploader("Choose .jpg pics ...", type="jpg", accept_multiple_files=True)
-
-    if uploaded_files:
-        # Split the page into 3 columns
-        col1, col2, col3 = st.beta_columns(3)
-
-        for i, uploaded_file in enumerate(uploaded_files):
-            # Read and perform object detection on the uploaded image
-            file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
-            image = cv2.imdecode(file_bytes, 1)
-            detection_result = perform_object_detection(image)
-
-            # Display original image in the first column
-            col1.image(image, caption=f'Original Image - {uploaded_file.name}', use_column_width=True)
-
-            # Display image with bounding boxes in the second column
-            image_with_boxes = image.copy()
-            result.render(image_with_boxes)
-            col2.image(image_with_boxes, caption=f'Image with Bounding Boxes - {uploaded_file.name}', use_column_width=True)
-
-            # Display detection results in the third column
-            col3.code(detection_result, caption=f'Detection Results - {uploaded_file.name}')
-
-            # Save the output image with bounding boxes
-            output_path = f'output_{uploaded_file.name}'
-            image_with_boxes_pil = Image.fromarray(cv2.cvtColor(image_with_boxes, cv2.COLOR_BGR2RGB))
-            image_with_boxes_pil.save(output_path)
-
-            # Display the output image in the third column
-            col3.image(output_path, caption=f'Detected Objects - {uploaded_file.name}', use_column_width=True)
-
-if __name__ == "__main__":
-    main()
