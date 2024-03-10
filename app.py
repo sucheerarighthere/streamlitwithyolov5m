@@ -7,13 +7,19 @@ import numpy as np
 import torch, json , cv2 , detect
 
 
-st.title("🌊 Under the sea detection")
+#ตั้งค่าเพจให้เป็นแบบที่เราต้องการ พื้นหกลัง ตัวหนังสือ ใดๆว่าไป
+st.set_page_config(page_title="Object Detection",  # Setting page title
+    page_icon="🔬",     # Setting page icon
+    layout="wide",      # Setting layout to wide
+    initial_sidebar_state="expanded",# Expanding sidebar by default
+    
+        )   
 
 st.write("Upload your Image...")
 
 #model = torch.hub.load('./yolov5', 'custom', path='./last.pt', source='local')
 #model = torch.hub.load('ultralytics/yolov5', 'custom', path='models/last.pt', force_reload=True)
-model = torch.hub.load('ultralytics/yolov5', 'custom', path='models/best.pt')
+model = torch.hub.load('ultralytics/yolov5', 'custom', path= 'MODEL_WEIGHT')
 
 uploaded_file = st.file_uploader("Choose .jpg pic ...", type="jpg")
 if uploaded_file is not None:
