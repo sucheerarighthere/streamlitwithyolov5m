@@ -37,7 +37,7 @@ if uploaded_file is not None:
   result = model(imgRGB, size=600)
   
   detect_class = result.pandas().xyxy[0] 
-  num_objects_detected = len(detect_class)
+
 
   #labels, cord_thres = detect_class[:, :].numpy(), detect_class[:, :].numpy()
   
@@ -51,7 +51,7 @@ if uploaded_file is not None:
   #st.success(detect_class)
   
   outputpath = 'output.jpg'
-  
+    num_objects_detected = len(detect_class)
   result.render()  # render bbox in image
   for im in result.ims:
       im_base64 = Image.fromarray(im)
