@@ -34,28 +34,28 @@ if uploaded_file is not None:
 
   st.write("")
   st.write("Detecting...")
-  result = model(imgRGB, size=600)
+  result = model(imgRGB, size=300)
   
   detect_class = result.pandas().xyxy[0] 
 
 
-  #labels, cord_thres = detect_class[:, :].numpy(), detect_class[:, :].numpy()
+  # #labels, cord_thres = detect_class[:, :].numpy(), detect_class[:, :].numpy()
   
-  #     xmin       ymin    xmax        ymax          confidence  class    name
-  #0  148.605362   0.0    1022.523743  818.618286    0.813045      2      turtle
+  # #     xmin       ymin    xmax        ymax          confidence  class    name
+  # #0  148.605362   0.0    1022.523743  818.618286    0.813045      2      turtle
   
-   st.code(detect_class[['name', 'xmin','ymin', 'xmax', 'ymax']])
+  #  st.code(detect_class[['name', 'xmin','ymin', 'xmax', 'ymax']])
   
   
   
-  #st.success(detect_class)
+  # st.success(detect_class)
   
   outputpath = 'output.jpg'
-    # num_objects_detected = len(detect_class)
+    num_objects_detected = len(detect_class)
   result.render()  # render bbox in image
   for im in result.ims:
       im_base64 = Image.fromarray(im)
       im_base64.save(outputpath)
       img_ = Image.open(outputpath)
       st.image(img_, caption='Model Prediction(s)')
-      # st.write(f"<h1 style='font-size: 32px;'>Number of objects detected: {num_objects_detected}</h1>", unsafe_allow_html=True)
+      st.write(f"<h1 style='font-size: 32px;'>Number of objects detected: {num_objects_detected}</h1>", unsafe_allow_html=True)
