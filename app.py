@@ -15,11 +15,13 @@ st.set_page_config(page_title="Object Detection",  # Setting page title
     
         )   
 
-st.write("Upload your Image...")
+#ตั้งค่าภาพ
+image = Image.open('STAT-Header-Logo-V7.png')
+st.image(image, caption='สาขาวิชาสถิติ คณะวิทยาศาสตร์ มหาวิทยาลัยขอนแก่น', use_column_width=True )
 
 #model = torch.hub.load('./yolov5', 'custom', path='./last.pt', source='local')
 #model = torch.hub.load('ultralytics/yolov5', 'custom', path='models/last.pt', force_reload=True)
-model = torch.hub.load('ultralytics/yolov5', 'custom', path= 'MODEL_WEIGHT')
+model = torch.hub.load('ultralytics/yolov5', 'custom', path='models/bestyolo.pt')
 
 uploaded_file = st.file_uploader("Choose .jpg pic ...", type="jpg")
 if uploaded_file is not None:
