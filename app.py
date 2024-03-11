@@ -51,11 +51,11 @@ if uploaded_file is not None:
   # st.success(detect_class)
   
   outputpath = 'output.jpg'
-    num_objects_detected = len(detect_class)
+  num_objects_detected = len(detect_class)
   result.render()  # render bbox in image
   for im in result.ims:
       im_base64 = Image.fromarray(im)
       im_base64.save(outputpath)
       img_ = Image.open(outputpath)
       st.image(img_, caption='Model Prediction(s)')
-      st.write(f"<h1 style='font-size: 32px;'>Number of objects detected: {num_objects_detected}</h1>", unsafe_allow_html=True)
+      st.write(f"Number of objects detected: {num_objects_detected}")
