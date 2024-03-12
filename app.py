@@ -4,7 +4,7 @@ import io
 import os
 from PIL import Image
 import numpy as np
-import torch, json , cv2 , detect
+import torch, json , cv2
 
 
 #ตั้งค่าเพจให้เป็นแบบที่เราต้องการ พื้นหกลัง ตัวหนังสือ ใดๆว่าไป
