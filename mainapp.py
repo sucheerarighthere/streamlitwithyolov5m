@@ -47,4 +47,4 @@ for uploaded_file in uploaded_files:
             col1, col2, col3 = st.beta_columns(3)
             col1.image(img_, caption='Original Image', use_column_width=True)
             col2.image(img_, caption='Model Prediction(s)', use_column_width=True)
-            col3.markdown(f"<p style='font-size:24px; font-weight:bold;'>Number of objects detected: {num_objects_detected}</p>", unsafe_allow_html=True)
+            col3.write(f"Number of objects detected: {num_objects_detected}")
