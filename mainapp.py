@@ -148,9 +148,8 @@ for uploaded_file in uploaded_files:
                 draw = ImageDraw.Draw(im_base64)
                 for det in pred:
                     bbox = det[:4]
-                    score = det[4]
                     draw.rectangle(bbox, outline="red", width=1)
-                    draw.text((bbox[0], bbox[1]), f"Score: {score:.2f}", fill="red")
+                    draw.text((bbox[0], bbox[1]), fill="red")
                     num_objects_detected += 1  # Increment counter for each detected object
 
                 # Display the image with bounding boxes
