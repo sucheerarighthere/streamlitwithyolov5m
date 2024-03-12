@@ -111,6 +111,14 @@
 #         except Exception as e:
 #             st.error(f"Error processing file: {e}")
 # ================================
+import argparse
+import streamlit as st
+import io
+from PIL import Image
+import numpy as np
+import torch
+import cv2
+import detect
 # Set image
 image = Image.open('STAT-Header-Logo-V7.png')
 st.image(image, caption='สาขาวิชาสถิติ คณะวิทยาศาสตร์ มหาวิทยาลัยขอนแก่น', use_column_width=True)
