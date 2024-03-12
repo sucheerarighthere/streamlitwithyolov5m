@@ -111,11 +111,9 @@
 #         except Exception as e:
 #             st.error(f"Error processing file: {e}")
 # ================================
-import streamlit as st
-import torch
-import cv2
-import numpy as np
-from PIL import Image, ImageDraw
+# Set image
+image = Image.open('STAT-Header-Logo-V7.png')
+st.image(image, caption='สาขาวิชาสถิติ คณะวิทยาศาสตร์ มหาวิทยาลัยขอนแก่น', use_column_width=True)
 
 # Load YOLOv5 model
 model = torch.hub.load('ultralytics/yolov5', 'custom', path='models/bestyolo.pt')
@@ -132,31 +130,29 @@ for uploaded_file in uploaded_files:
             image = cv2.imdecode(file_bytes, 1)
             imgRGB = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-            # Detect objects using the YOLOv5 model
+            # Display information about the detection process
+            st.write("")
+            st.write("Detecting...")
+
+            # Run YOLOv5 model on the image
             result = model(imgRGB, size=300)
+
+            # Extract detected objects' information
             detect_class = result.pandas().xyxy[0]
 
             # Display the original image
             st.image(imgRGB, caption='Original Image', use_column_width=True)
 
-            # Display bounding boxes and hide label class
-            num_objects_detected = 0  # Initialize counter
-            for im, pred in zip(result.ims, result.xyxy[0]):
-                im_base64 = Image.fromarray(im)
-
-                # Draw bounding boxes on the image
-                draw = ImageDraw.Draw(im_base64)
-                for det in pred:
-                    bbox = det[:4]
-                    draw.rectangle(bbox, outline="red", width=1)
-                    draw.text((bbox[0], bbox[1]), fill="red")
-                    num_objects_detected += 1  # Increment counter for each detected object
-
-                # Display the image with bounding boxes
-                st.image(im_base64, caption=f'Model Prediction(s) - {num_objects_detected} objects detected', use_column_width=True)
+            # Display bounding boxes without class names and confidence scores
+            for pred in detect_class:
+                bbox = pred[:4]
+                st.image(cv2.rectangle(imgRGB.copy(), tuple(bbox[:2]), tuple(bbox[2:]), (0, 255, 0), 2), use_column_width=True)
 
             # Display the number of detected objects
+            num_objects_detected = len(detect_class)
             st.write(f"Number of objects detected: {num_objects_detected}")
 
         except Exception as e:
+            # Display an error message if an exception occurs during processing
             st.error(f"Error processing file: {e}")
+
